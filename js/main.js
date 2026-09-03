@@ -36,11 +36,32 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(e.key === 'Escape') lb.setAttribute('aria-hidden','true');
   });
 
-  // Contact form (placeholder)
+  // Contact form
   const form = document.getElementById('contactForm');
-  form.addEventListener('submit', (e)=>{
+  form.addEventListener('submit', async (e)=>{
     e.preventDefault();
-    alert('Thanks — your message has been received (demo).');
-    form.reset();
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      });
+
+      if (!response.ok) throw new Error('Form submission failed');
+
+      form.innerHTML = '<p class="form-status success" role="status">Thanks — your message has been sent.</p>';
+    } catch (error) {
+      const status = form.querySelector('.form-status') || document.createElement('p');
+      status.className = 'form-status error';
+      status.setAttribute('role', 'alert');
+      status.textContent = 'Sorry, your message could not be sent. Please try again.';
+      if (!status.parentElement) form.prepend(status);
+      submitButton.disabled = false;
+      submitButton.textContent = 'Send Message';
+    }
   });
 });
