@@ -61,6 +61,8 @@ html,body{height:100%;margin:0;background:linear-gradient(180deg,#000 0%,#070707
 .card{background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);transition:transform .18s ease, box-shadow .18s ease}
 .card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,0.6)}
 .card img{width:100%;height:220px;object-fit:cover;display:block}
+.project-image-trigger{cursor:pointer}
+.project-image-trigger:focus{outline:2px solid var(--accent);outline-offset:-2px}
 .card-body{padding:16px}
 .card-body h3{margin:0 0 8px;font-size:16px}
 .muted{color:var(--muted)}

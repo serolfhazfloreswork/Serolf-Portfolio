@@ -18,8 +18,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const lbDesc = document.getElementById('lb-desc');
   const lbTools = document.getElementById('lb-tools');
   document.querySelectorAll('.btn.view').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      lbImage.src = btn.dataset.image;
+    const project = btn.closest('.card, .design-item');
+    const projectImage = project.querySelector('img');
+    const openProject = ()=>{
+      lbImage.src = btn.dataset.image || projectImage.src;
       lbImage.style.display = 'block';
       lbImage.style.width = '100%';
       lbImage.style.height = 'auto';
@@ -28,7 +30,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
       lbDesc.textContent = btn.dataset.desc;
       lbTools.textContent = btn.dataset.tools;
       lb.setAttribute('aria-hidden','false');
-    })
+    };
+    projectImage.classList.add('project-image-trigger');
+    projectImage.setAttribute('tabindex', '0');
+    projectImage.setAttribute('role', 'button');
+    projectImage.setAttribute('aria-label', `View ${btn.dataset.title}`);
+    projectImage.addEventListener('click', openProject);
+    projectImage.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openProject();
+      }
+    });
+    btn.remove();
   });
   document.querySelectorAll('.lightbox .close').forEach(b=>b.addEventListener('click', ()=>{lb.setAttribute('aria-hidden','true')}));
   lb.addEventListener('click', (e)=>{ if(e.target===lb) lb.setAttribute('aria-hidden','true') });
